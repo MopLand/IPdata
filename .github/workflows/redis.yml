@@ -1,0 +1,50 @@
+
+on: [workflow_dispatch]
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+        ts: [nts, ts]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install PHP ${{ matrix.php }}
+        uses: php/setup-php-sdk@v0.8
+        id: setup-php-sdk
+        with:
+          version: ${{ matrix.php }}
+          arch: x64
+          ts: ${{matrix.ts}}
+      - name: Install dependencies
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          toolset: ${{steps.setup-php-sdk.outputs.toolset}}
+      
+      - name: Download phpredis
+        run: |
+          git clone --depth=1 https://github.com/phpredis/phpredis.git
+          cd phpredis
+
+      - name: Build phpredis
+        run: |
+          phpize
+          ./configure --enable-redis --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
+          nmake
+      - name: package
+        run: |
+          md binaries
+          copy LICENSE binaries
+          Get-ChildItem -Recurse -Filter "php_redis.dll" | ForEach-Object {Copy-Item -Path $_.FullName -Destination "binaries"}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: redis-${{matrix.php}}-x64-${{matrix.ts}}
+          path: binaries
