@@ -29,6 +29,7 @@ jobs:
           toolset: ${{steps.setup-php-sdk.outputs.toolset}}
       
       - name: Download phpredis
+        id: download-php-redis
         run: |
           git clone --depth=1 https://github.com/phpredis/phpredis.git
           cd phpredis
@@ -36,8 +37,9 @@ jobs:
       - name: Build phpredis
         run: |
           phpize
-          ./configure --enable-redis --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
+          ./configure --enable-redis --with-prefix=${{steps.download-php-redis.outputs.prefix}}
           nmake
+      
       - name: package
         run: |
           md binaries
