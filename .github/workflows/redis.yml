@@ -37,7 +37,7 @@ jobs:
       - name: Build phpredis
         run: |
           phpize
-          ./configure --enable-redis --with-prefix=${{github.workspace}}phpredis
+          ./configure --enable-redis --with-prefix=${{github.workspace}}\phpredis
           nmake
       
       - name: package
