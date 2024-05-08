@@ -37,7 +37,7 @@ jobs:
       - name: Build phpredis
         run: |
           phpize
-          ./configure --enable-redis --with-prefix=phpredis\php-bin
+          ./configure --enable-redis --with-prefix=phpredis
           nmake
       
       - name: package
