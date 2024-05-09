@@ -17,6 +17,7 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/phpredis/phpredis.git
           cd phpredis
+          pwd
 
       - name: Install PHP ${{ matrix.php }}
         uses: php/setup-php-sdk@v0.8
@@ -30,6 +31,7 @@ jobs:
         with:
           arch: x64
           toolset: ${{steps.setup-php-sdk.outputs.toolset}}
+        run: pwd
 
       - name: Build phpredis
         run: |
