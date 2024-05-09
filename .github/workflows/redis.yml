@@ -32,7 +32,6 @@ jobs:
         id: download-php-redis
         run: |
           git clone --depth=1 https://github.com/phpredis/phpredis.git
-          cd ../
 
       - name: Build phpredis
         run: |
