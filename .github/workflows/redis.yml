@@ -11,15 +11,12 @@ jobs:
         php: ['7.3']
         ts: [nts]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      
+
       - name: Clone phpredis
         id: download-php-redis
         run: |
           git clone --depth=1 https://github.com/phpredis/phpredis.git
+          cd phpredis
 
       - name: Install PHP ${{ matrix.php }}
         uses: php/setup-php-sdk@v0.8
@@ -37,7 +34,7 @@ jobs:
       - name: Build phpredis
         run: |
           phpize
-          ./configure --enable-redis --with-prefix=${{github.workspace}}\phpredis
+          ./configure --enable-redis --with-prefix=${{github.workspace}}\phpredis\php-bin
           nmake
       
       - name: package
