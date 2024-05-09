@@ -34,7 +34,6 @@ jobs:
 
       - name: Build phpredis
         run: |
-          pwd
           cd phpredis
           phpize
           ./configure --enable-redis --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
@@ -43,7 +42,7 @@ jobs:
       - name: package
         run: |
           md binaries
-          copy LICENSE binaries
+          copy phpredis/LICENSE binaries
           Get-ChildItem -Recurse -Filter "php_redis.dll" | ForEach-Object {Copy-Item -Path $_.FullName -Destination "binaries"}
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
