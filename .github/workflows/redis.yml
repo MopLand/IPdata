@@ -15,6 +15,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+      
+      - name: Clone phpredis
+        id: download-php-redis
+        run: |
+          git clone --depth=1 https://github.com/phpredis/phpredis.git
+
       - name: Install PHP ${{ matrix.php }}
         uses: php/setup-php-sdk@v0.8
         id: setup-php-sdk
@@ -27,11 +33,6 @@ jobs:
         with:
           arch: x64
           toolset: ${{steps.setup-php-sdk.outputs.toolset}}
-      
-      - name: Download phpredis
-        id: download-php-redis
-        run: |
-          git clone --depth=1 https://github.com/phpredis/phpredis.git
 
       - name: Build phpredis
         run: |
