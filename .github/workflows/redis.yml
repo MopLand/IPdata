@@ -36,7 +36,7 @@ jobs:
         run: |
           pwd
           phpize
-          ./configure --enable-redis --with-prefix=${{github.workspace}}\phpredis\php-bin
+          ./configure --enable-redis --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
           nmake
       
       - name: package
