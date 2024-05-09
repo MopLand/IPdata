@@ -1,5 +1,5 @@
 
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   windows:
@@ -35,6 +35,7 @@ jobs:
       - name: Build phpredis
         run: |
           pwd
+          cd phpredis
           phpize
           ./configure --enable-redis --with-prefix=${{steps.setup-php-sdk.outputs.prefix}}
           nmake
