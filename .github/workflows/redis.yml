@@ -31,10 +31,10 @@ jobs:
         with:
           arch: x64
           toolset: ${{steps.setup-php-sdk.outputs.toolset}}
-        run: pwd
 
       - name: Build phpredis
         run: |
+          pwd
           phpize
           ./configure --enable-redis --with-prefix=${{github.workspace}}\phpredis\php-bin
           nmake
